@@ -36,4 +36,4 @@ WM Upload - Classe PHP para upload de arquivos
 
 ## Para mais detalhes visite a página do plugin
 
-[Website do Plugin WM Gridfolio](http://welisonmenezes.com.br/extras/plugins/php/wm-upload/)
+[Website do Plugin WM Upload](http://welisonmenezes.com.br/extras/plugins/php/wm-upload/)
