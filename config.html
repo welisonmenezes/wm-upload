@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="WM Upload - Classe PHP para upload de arquivos">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="assets/css/app.css">
+
+		<link rel="stylesheet" href="assets/syntaxhighlighter/styles/shCore.css">
+		<link rel="stylesheet" href="assets/syntaxhighlighter/styles/shCoreDefault.css">
+
+		<script type="text/javascript" src="assets/syntaxhighlighter/scripts/shCore.js"></script>
+		<script type="text/javascript" src="assets/syntaxhighlighter/scripts/shBrushPhp.js"></script>
+		<script type="text/javascript" src="assets/syntaxhighlighter/scripts/shBrushXml.js"></script>
+
+		<title>WM Upload - Classe PHP para upload de arquivos</title>
+	</head>
+	<body>
+
+		<nav class="navbar navbar-inverse">
+			<div class="container">
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+                        <li><a href="index.html" title="Home">Home</a></li>
+                        <li><a href="init.html" title="Inicialização">Inicialização</a></li>
+                        <li class="active"><a href="config.html" title="Configurações">Configurações</a></li>
+                        <li><a href="exemple.php" title="Exemplo">Exemplo</a></li>
+                    </ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container">
+
+			<div class="row">
+
+			  	<div class="col-sm-12">
+
+			  		<article class="body">
+			  			<h1>
+			  				WM Upload - Classe PHP para upload de arquivos.
+			  			</h1>
+			  			<p>
+			  				Configurções e opções da classe PHP WM Upload - Classe PHP para upload de arquivos, inclusive imagens.
+			  			</p>
+			  			<hr>
+
+			  			<h3>
+			  				Métodos públicos
+			  			</h3>
+
+			  			<p>
+			  				A Classe WM Upload possui 4 métodos públicos além do construtor. São esses: <em>addFile()</em>, <em>getElementsSended()</em>, <em>upload()</em> e <em>getDataErrors()</em>.
+			  			</p>
+
+			  			<dl class="dl-horizontal">
+							<dt style="text-align:left;">construtor</dt>
+							<dd>
+								<p>
+									O método construtor, como sabemos, é executado no momento em que a classe é instanciada. Ele espera um parâmetro opcional. Esse parâmetro é um array com configurações globlais para os campos em geral. <br>Exemplo:
+								</p>
+								<pre class="brush: php;">
+									require_once('wm-upload/WMUpload.php');
+
+									$config = array('uploadDirectory' => 'assets/uploads/');
+									$upload = new WMUpload($config);
+								</pre>
+							</dd>
+							<dt style="text-align:left;">addFile()</dt>
+							<dd>
+								<p>
+									Esse método aceita três parâmetros onde o primeiro é obrigatório e os demais são opcionais. O primeiro parâmetro deve ser o arquivo que será upado. O segundo parâmetro deve ser um identificador do input html que está enviando o arquivo (pode ser id o class). O terceiro parâmetro deve ser um array com configurações para esse campo específico. <br>Exemplo:
+								</p>
+								<pre class="brush: php;">
+									$config = array('uploadDirectory' => 'assets/uploads/');
+									$upload->addFile($_FILES['file2'], 'file2', $config);
+								</pre>
+							</dd>
+							<dt style="text-align:left;">getElementsSended()</dt>
+							<dd>
+								<p>
+									Esse método retorna um array com os dados adicionados no método <em>addFile()</em>. Isso inclui informações derivadas do array $_FILES e o identificador html se informado. <br>Exemplo:
+								</p>
+								<pre class="brush: php;">
+									$infos = $upload->getElementsSended();
+									var_dump($infos);
+								</pre>
+							</dd>
+							<dt style="text-align:left;">upload()</dt>
+							<dd>
+								<p>
+									Esse método executa as validações conforme configurado e faz o upload do arquivo para o servidor. Se tudo ocorrer bem retorna <em>true</em>. Em caso de falha ou erro retorna <em>false</em>. <br>Exemplo:
+								</p>
+								<pre class="brush: php;">
+									if($upload->upload())
+									{
+										echo 'arquivo salvo com sucesso';
+									}
+									else
+									{
+										echo 'erro no upload';
+									}
+								</pre>
+							</dd>
+							<dt style="text-align:left;">getDataErrors()</dt>
+							<dd>
+								<p>
+									Esse método retorna um array com as mensagens de erro se houverem ou um array vazio se não houver erros. <br>Exemplo:
+								</p>
+								<pre class="brush: php;">
+									$erros = $upload->getDataErrors();
+									var_dump($erros);
+								</pre>
+							</dd>
+						</dl><br><br>
+
+						<h3>
+			  				Configurações
+			  			</h3>
+
+			  			<p>
+			  				A Classe WM Upload permite algumas configurações, que lhe permitem customizar o seu uso. Veja abaixo as opções disponíveis:
+			  			</p>
+
+			  			<table class="table table-bordered">
+							<thead>
+								<tr>
+								  	<th>
+								  		Opção
+								  	</th>
+								  	<th style="width:70%;">
+								  		Descrição
+								  	</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<em>uploadDirectory</em>
+									</td>
+									<td style="width:70%;">
+										<strong>String</strong> que informa o diretório onde o arquivo será salvo. Default : 
+										<em>
+											"uploads/"
+										</em>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>maxFileSize</em>
+									</td>
+									<td style="width:70%;">
+										<strong>Int</strong> que indica o tamanho máximo permitido para cada arquivo. O valor representa os bytes. O default equivale a 1 MB. Default : 
+										<em>
+											1048576
+										</em>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>extensions</em>
+									</td>
+									<td style="width:70%;">
+										<strong>Array</strong> onde se indica as extensões de arquivos válidos para o upload. Default : 
+										<em>
+											array('jpg','jpeg','gif','png', 'txt')
+										</em>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>imageQuality</em>
+									</td>
+									<td style="width:70%;">
+										<strong>Int</strong> que indica a qualidade com que a imagem será salva no servidor. O valor representa um percentual e vai de 0 a 100. Default : 
+										<em>
+											100
+										</em>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>limitImageSize</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as dimensões mínimas e máximas de uma imagem.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>maxWidth</td>
+												<td style="width:75%;">
+													<strong>Int</strong> ou <strong>false</strong> que indicam  a largura máxima da imagem. Se for false não haverá limite para a largura. Defaul : <em>false</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>maxHeight</td>
+												<td style="width:75%;">
+													<strong>Int</strong> ou <strong>false</strong> que indicam  a altura máxima da imagem. Se for false não haverá limite para a altura. Defaul : <em>false</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>minWidth</td>
+												<td style="width:75%;">
+													<strong>Int</strong> ou <strong>false</strong> que indicam a largura mínima da imagem. Se for false não haverá limite para a largura. Defaul : <em>false</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>minHeight</td>
+												<td style="width:75%;">
+													<strong>Int</strong> ou <strong>false</strong> que indicam a altura mínima da imagem. Se for false não haverá limite para a altura. Defaul : <em>false</em>.
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>resizeTo</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as configurações para o redimensionamento das imagens.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>resize</td>
+												<td style="width:75%;">
+													<strong>Boolean</strong> que indica se haverá ou não o redimensionamento. Default : <em>true</em>
+												</td>
+											</tr>
+											<tr>
+												<td>option</td>
+												<td style="width:75%;">
+													<strong>String</strong> que indica a forma como o redimensionamento ocorrerá. Os valores possíveis são: <strong>[default, exact, maxwidth, maxheight]</strong>, onde: <br> 
+													<strong>default</strong> redinesionará proporcionalmente levando em consideração a largura e a altura indicadas, <br>
+													<strong>exact</strong> forçará o redimensionamento com as medidas exatas,<br>
+													<strong>maxwidth</strong> redimensionará proporcionalmente levando em consideração a largura indicada e <br>
+													<strong>maxheight</strong> redimensionará proporcionalmente levando em consideração a altura indicada. <br>
+													Defaul : <em>'default'</em>
+												</td>
+											</tr>
+											<tr>
+												<td>width</td>
+												<td style="width:75%;">
+													<strong>Int</strong> que indicará a largura máxima da imagem após o redimensionamento. Default : <em>800</em>
+												</td>
+											</tr>
+											<tr>
+												<td>height</td>
+												<td style="width:75%;">
+													<strong>Int</strong> que indicará a altura máxima da imagem após o redimensionamento. Default : <em>600</em>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>cropImage</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as configurações de corte da imagem.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>crop</td>
+												<td style="width:75%;">
+													<strong>Boolean</strong> que indica se haverá o crop ou não. Defaul : <em>true</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>width</td>
+												<td style="width:75%;">
+													<strong>Int</strong> que indica a largura da imagem após o crop. Defaul : <em>400</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>height</td>
+												<td style="width:75%;">
+													<strong>Int</strong> que indica a altura da imagem após o crop. Defaul : <em>400</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>ratio</td>
+												<td style="width:75%;">
+													<strong>Boolean</strong>. Em caso de true tentará enquadrar a imagem na área de crop. Se false aplicará a risca as opções de redimensionamento. Defaul : <em>true</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>position</td>
+												<td style="width:75%;">
+													<strong>String</strong> que indica a posição onde o corte ocorrerá na imagem. Também se refere a posição da imagem caso a mesma seja menor que a área do corte. <br>
+													As opções válidas são <strong>[top-left, top-center, top-right, center-left, center-center, center-right, bottom-left, bottom-center, bottom-right]</strong> <br>
+													Defaul : <em>'center-center'</em>.
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>backgroundImage</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as configurações do background da imagem.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>transparent</td>
+												<td style="width:75%;">
+													<strong>Int</strong> que indica o grau de opacidade do background. O valor vai de 0 a 127, onde 127 indica máxima transparênica e 0 indica sem transparência. Defaul : <em>0</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>color</td>
+												<td style="width:75%;">
+													<strong>Array</strong> de inteiros que indicam o RGB do background. Defaul : <em>array(0, 0, 0)</em>.
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>waterMark</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as configurações da marca d'água da imagem.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>waterMark</td>
+												<td style="width:75%;">
+													<strong>Boolean</strong> que indica se haverá ou não uma marca d'água. Se true haverá se false não haverá. Defaul : <em>false</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>waterMarkDirectory</td>
+												<td style="width:75%;">
+													<strong>String</strong> que informa o caminho da imagem que será usada para criar a marca d'água. A imagem deve ser do tipo PNG. Defaul : <em>'watermark.png'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>opacty</td>
+												<td style="width:75%;">
+													<strong>Int</strong> que indica o grau de opacidade da marca d'água. O valor vai de 0 a 100. Onde 100 é totalmente visível e 0 é totalmente transparente. Defaul : <em>100</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>position</td>
+												<td style="width:75%;">
+													<strong>String</strong> que indica a posição onde a marca d'água ficará sobre a imagem. <br>
+													As opções válidas são <strong>[top-left, top-center, top-right, center-left, center-center, center-right, bottom-left, bottom-center, bottom-right]</strong> <br>
+													Defaul : <em>'bottom-right'</em>.
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>randomFilename</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as configurações para o nome do arquivo a ser salvo no servidor.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>hasRandom</td>
+												<td style="width:75%;">
+													<strong>Boolean</strong> que indica se o nome será randômico ou não. Se true o nome será gerado randômicamente. Se false o nome se baseará no nome do arquivo enviado; porém a classe cuida para que o nome não se repita. Defaul : <em>false</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>prefix</td>
+												<td style="width:75%;">
+													<strong>String</strong> onde você indicará um prefixo a ser usado na composição do nome randômico do arquivo. Defaul : <em>'your prefix here'</em>.
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>validateNameFile</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as configurações para a validação do nome do arquivo enviado.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>validate</td>
+												<td style="width:75%;">
+													<strong>Boolean</strong> que indica se o nome do arquivo será validado. Defaul : <em>true</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>regex</td>
+												<td style="width:75%;">
+													<strong>RegEx</strong>. Expressão regular que validará o nome do arquivo. Defaul : <em>'/^[a-zA-Z][a-zA-Z0-9\-\_\.]*$/'</em>.
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<em>errorsMessages</em>
+									</td>
+									<td style="width:70%;">
+										<p>
+											<strong>Array</strong> cujo as chaves indicam as configurações para as mensagens de erros. A string %s será trocada pelo nome do arquivo enviado na maioria dos casos.
+										</p>  
+										<table class="table table-bordered">
+											<tr>
+											  	<th>
+											  		Chave
+											  	</th>
+											  	<th style="width:70%;">
+											  		Descrição
+											  	</th>
+											</tr>
+											<tr>
+												<td>empty</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para quando o arquivo adicionado é enviado vazio. <br>
+													Defaul : <em>'O elemento %s foi enviado vazio para o servidor'</em>. <br>
+													Nesse caso a string %s será trocada pelo identificador html do elemento se indicado.
+												</td>
+											</tr>
+											<tr>
+												<td>file_1</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para o erro 1 do array $_FILES. <br>
+													Defaul : <em>'O arquivo %s excede o limite definido na diretiva upload_max_filesize'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>file_2</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para o erro 2 do array $_FILES. <br>
+													Defaul : <em>'O arquivo %s excede o limite definido em MAX_FILE_SIZE no formulário HTML'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>file_3</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para o erro 3 do array $_FILES. <br>
+													Defaul : <em>'O upload dos arquivos foi feito parcialmente'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>file_4</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para o erro 4 do array $_FILES. <br>
+													Defaul : <em>'Nenhum arquivo foi enviado'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>file_6</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para o erro 6 do array $_FILES. <br>
+													Defaul : <em>'Pasta temporária ausênte'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>file_7</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para o erro 7 do array $_FILES. <br>
+													Defaul : <em>'Falha em escrever o arquivo %s em disco'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>file_8</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem para o erro 8 do array $_FILES. <br>
+													Defaul : <em>'Uma extensão do PHP interrompeu o upload do arquivo %s'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>maxWidth</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando a imagem excede a largura máxima. <br>
+													Defaul : <em>'A largura da imagem %s é maior do que a permitida'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>maxHeight</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando a imagem excede a altura máxima. <br>
+													Defaul : <em>'A altura da imagem %s é maior do que a permitida'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>minWidth</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando a imagem não atinge a largura mínima. <br>
+													Defaul : <em>'A largura da imagem %s é menor do que a permitida'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>minHeight</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando a imagem não atinge a altura mínima. <br>
+													Defaul : <em>'A altura da imagem %s é menor do que a permitida'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>unallowedExtension</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando a extensão do arquivo não está entre as permitidas. <br>
+													Defaul : <em>'O tipo do arquivo %s não é permitido'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>maxFileSize</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando o tamanho do arquivo excede o limite permitido. <br>
+													Defaul : <em>'O tamanho do arquivo %s excede o limite permitido'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>isValidName</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando o nome do arquivo enviado não é válido. <br>
+													Defaul : <em>'O Arquivo %s contém caracteres inválidos em seu nome'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>uploadDirectory</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando o diretório de upload configurado não existe. <br>
+													Defaul : <em>'O Diretório %s não foi encontrado'</em>.<br>
+													Nesse caso a string %s será trocada pelo caminho do upload configurado.
+												</td>
+											</tr>
+											<tr>
+												<td>uploadDirectoryWritable</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando o diretório de upload configurado não tem permissão de escrita. <br>
+													Defaul : <em>'O Diretório %s não tem permissão de escrita'</em>.<br>
+													Nesse caso a string %s será trocada pelo caminho do upload configurado.
+												</td>
+											</tr>
+											<tr>
+												<td>waterMark</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando a imagem da marca d'água configurada não foi encontrada. <br>
+													Defaul : <em>'O arquivo %s não foi encontrado'</em>.<br>
+													Nesse caso a string %s será trocada pela caminho da marca d'água configurada.
+												</td>
+											</tr>
+											<tr>
+												<td>waterMarkType</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando o tipo da imagem da marca d'água não é PNG. <br>
+													Defaul : <em>'A imagem para a marca d\'água deve ser do tipo PNG'</em>.<br>
+													Nesse caso a string %s será trocada pela caminho da marca d'água configurada.
+												</td>
+											</tr>
+											<tr>
+												<td>imageErrorUpload</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando o upload de uma imagem falha. <br>
+													Defaul : <em>'A imagem %s não pôde ser salva. Por favor tente novamente'</em>.
+												</td>
+											</tr>
+											<tr>
+												<td>fileErrorUpload</td>
+												<td style="width:75%;">
+													<strong>String</strong>. Mensagem de erro quando o upload de um arquivo falha. <br>
+													Defaul : <em>'O arquivo %s não pôde ser salvo. Por favor tente novamente'</em>.
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<br><br>
+
+						<h3>
+							Exemplo completo
+						</h3>
+						<p>
+							Veja agora um exemplo full do array de configurações. Os valores no exemplo são os valores default:
+						</p>
+
+						<pre class="brush: php;">
+							$config = array(
+								'uploadDirectory' => 'uploads/',
+								'maxFileSize' => 1048576, // bytes 
+								'extensions' => array('jpg','jpeg','gif','png', 'txt'),
+								'imageQuality' => 100,
+								'limitImageSize' => array(
+									'maxWidth' => false, // int or false
+									'maxHeight' => false, // int or false,
+									'minWidth' => false, // int or false
+									'minHeight' => false // int or false
+								),
+								'resizeTo' => array(
+									'resize' => true,
+									'option' => 'default', // [default, exact, maxwidth, maxheight]
+									'width' => 800,
+									'height' => 600
+								),
+								'cropImage' => array(
+									'crop' => true,
+									'width' => 400,
+									'height' => 400,
+									'ratio' => true,
+									'position' => 'center-center' // [top-left, top-center, top-right, center-left, center-center, center-right, bottom-left, bottom-center, bottom-right]
+								),
+								'backgroundImage' => array(
+									'transparent' => 0, // [0-127]
+									'color' => array(0, 0, 0) // [rgb]
+								),
+								'waterMark' => array(
+									'waterMark' => false,
+									'waterMarkDirectory' => 'watermark.png',
+									'opacty' => 100, // [0-100]
+									'position' => 'bottom-right' // [top-left, top-center, top-right, center-left, center-center, center-right, bottom-left, bottom-center, bottom-right]
+								),
+								'randomFilename' => array(
+									'hasRandom' => false, // true or false
+									'prefix' => 'your prefix here' // string or false
+								),
+								'validateNameFile' => array(
+									'validate' => true, // true or false
+									'regex' => '/^[a-zA-Z][a-zA-Z0-9\-\_\.]*$/' // regex
+								),
+								'errorsMessages' => array(
+									'empty' => 'O elemento %s foi enviado vazio para o servidor',
+									'file_1' => 'O arquivo %s excede o limite definido na diretiva upload_max_filesize',
+									'file_2' => 'O arquivo %s excede o limite definido em MAX_FILE_SIZE no formulário HTML',
+									'file_3' => 'O upload dos arquivos foi feito parcialmente',
+									'file_4' => 'Nenhum arquivo foi enviado',
+									'file_6' => 'Pasta temporária ausênte',
+									'file_7' => 'Falha em escrever o arquivo %s em disco',
+									'file_8' => 'Uma extensão do PHP interrompeu o upload do arquivo %s',
+									'maxWidth' => 'A largura da imagem %s é maior do que a permitida',
+									'maxHeight' => 'A altura da imagem %s é maior do que a permitida',
+									'minWidth' => 'A largura da imagem %s é menor do que a permitida',
+									'minHeight' => 'A altura da imagem %s é menor do que a permitida',
+									'unallowedExtension' => 'O tipo do arquivo %s não é permitido',
+									'maxFileSize' => 'O tamanho do arquivo %s excede o limite permitido',
+									'isValidName' => 'O Arquivo %s contém caracteres inválidos em seu nome',
+									'uploadDirectory' => 'O Diretório %s não foi encontrado',
+									'uploadDirectoryWritable' => 'O Diretório %s não tem permissão de escrita',
+									'waterMark' => 'O arquivo %s não foi encontrado',
+									'waterMarkType' => 'A imagem para a marca d\'água deve ser do tipo PNG',
+									'imageErrorUpload' => 'A imagem %s não pôde ser salva. Por favor tente novamente',
+									'fileErrorUpload' => 'O arquivo %s não pôde ser salvo. Por favor tente novamente'
+								)
+							);
+							
+							$upload = new WMUpload($config);
+						</pre>
+
+						<h3>
+							Onde passar as configuraçãos
+						</h3>
+						<p>
+							Você pode passar o array de configurações no momento em que a Classe é instanciada, como no exemplo acima. Essas serão as configurações globais. Nesse caso as configurações se aplicarão a todos os arquivos adicionados para classe
+						</p>
+						<p>
+							Mas você pode adicionar configurações específicas para um arquivo específico. Para isso basta passar um array de configuração como terceiro parâmetro no método <em>addFile()</em>. Exemplo:
+						</p>
+
+						<pre class="brush: php;">
+							$config = array('uploadDirectory' => 'assets/uploads/');
+							$upload->addFile($_FILES['file2'], 'file2', $config);
+						</pre>
+
+						<p>
+							Nesse caso as cofigurações se aplicarão apenas ao arquivo adicionado ali. Os demais pegarão as configuraçãos globais.
+						</p>
+
+
+						<br><br>
+
+						<ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="https://github.com/welisonmenezes/wm-upload" target="_blank" class="btn btn-primary btn-large btn-block" title="WM Gridfolio no Github">GITHUB</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://twitter.com/WelisonMenezes" target="_blank" class="btn btn-primary btn-large btn-block" title="Perfil no Twitter">TWITTER</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="http://welisonmenezes.com.br/" target="_blank" class="btn btn-primary btn-large btn-block" title="Portifólio Welison Menezes">WEBSITE</a>
+                            </li>
+                        </ul>
+
+			  		</article>
+			  		
+			  	</div>
+
+			</div>
+
+		</div><!-- /.container --> <br>
+
+		<br><br><br>
+
+		<footer class="footer">
+			<div class="container">
+			<p class="text-muted">&copy; Todos os direitos reservados. 2014 || Welison Menezes</p>
+			</div>
+		</footer>
+
+		<script type="text/javascript" src="assets/js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				SyntaxHighlighter.all();
+			});
+		</script>
+	</body>
+</html>

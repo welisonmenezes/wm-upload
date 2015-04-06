@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="WM Upload - Classe PHP para upload de arquivos">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="assets/css/app.css">
+
+		<link rel="stylesheet" href="assets/syntaxhighlighter/styles/shCore.css">
+		<link rel="stylesheet" href="assets/syntaxhighlighter/styles/shCoreDefault.css">
+
+		<script type="text/javascript" src="assets/syntaxhighlighter/scripts/shCore.js"></script>
+		<script type="text/javascript" src="assets/syntaxhighlighter/scripts/shBrushPhp.js"></script>
+		<script type="text/javascript" src="assets/syntaxhighlighter/scripts/shBrushXml.js"></script>
+
+		<title>WM Upload - Classe PHP para upload de arquivos</title>
+	</head>
+	<body>
+
+		<nav class="navbar navbar-inverse">
+			<div class="container">
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+                        <li><a href="index.html" title="Home">Home</a></li>
+                        <li class="active"><a href="init.html" title="Inicialização">Inicialização</a></li>
+                        <li><a href="config.html" title="Configurações">Configurações</a></li>
+                        <li><a href="exemple.php" title="Exemplo">Exemplo</a></li>
+                    </ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container">
+
+			<div class="row">
+
+			  	<div class="col-sm-12">
+
+			  		<article class="body">
+			  			<h1>
+			  				WM Upload - Classe PHP para upload de arquivos.
+			  			</h1>
+			  			<p>
+			  				Manual de uso da classe PHP WM Upload - Classe PHP para upload de arquivos, inclusive imagens.
+			  			</p>
+			  			<hr>
+
+
+			  			<h3>
+			  				Instalação
+			  			</h3>
+
+			  			<p>
+			  				Inclua a classe:
+			  			</p>
+
+				  		<pre class="brush: php;">
+				  			require_once('wm-upload/WMUpload.php');
+						</pre>
+
+						<h3>
+			  				Inicialização
+			  			</h3>
+
+			  			<p>
+			  				Instancia a classe WMUpload:
+			  			</p>
+
+			  			<pre class="brush: php;">
+							$upload = new WMUpload();
+						</pre>
+
+						<h3>
+			  				Adicionando arquivos para upload
+			  			</h3>
+
+			  			<p>
+			  				Informe o arquivo para upload no primeiro parâmetro do método <em>addFile()</em> (você pode add quantos desejar). Após adicionar os arquivos desejados execute o método <em>upload()</em>
+			  			</p>
+
+			  			<p>
+			  				Além do primeiro parâmetro o método tem mais dois parâmetros opcionais. O segundo se refere a um identificador html do input file (id ou class). Esse identificador será retornado em <em>getElementsSended()</em>. O terceiro parâmetro são configuraçãoe específicas para o arquivo adicionado. <strong>Para mais detalhes veja a página de configurações.</strong>
+			  			</p>
+
+			  			<pre class="brush: php;">
+							$file = (isset($_FILES['file'])) ? $_FILES['file'] : null;
+							$file2 = (isset($_FILES['file2'])) ? $_FILES['file2'] : null;
+
+							$upload->addFile($file);
+							$upload->addFile($file2);
+						</pre>
+
+						<h3>
+			  				Acessando os dados enviados
+			  			</h3>
+
+			  			<p>
+			  				Se desejar você pode ter acesso aos dados do(s) arquivo(s) enviado(s). Para isso use o método <em>getElementsSended()</em>. Ele retorna inclusive o identificador html do elemento se este foi indicado no método <em>addFile()</em>. <strong>Atenção. Chame-o após adicionar os arquivos</strong>
+			  			</p>
+
+			  			<pre class="brush: php;">
+							$infos = $upload->getElementsSended();
+							var_dump($infos);
+						</pre>
+
+						<h3>
+			  				Fazendo os uploads
+			  			</h3>
+
+			  			<p>
+			  				Para o upload ocorrer corretamente execute o método <em>upload()</em> logo após adicionar o arquivo desejado. O método retorna <em>true</em> ou <em>false</em>. Exemplo:
+			  			</p>
+
+			  			<pre class="brush: php;">
+							$upload->upload();
+						</pre>
+
+						<h3>
+			  				Mensagens de erro.
+			  			</h3>
+
+			  			<p>
+			  				Você pode ter acesso as mensagens de erro por meio do método <em>getDataErrors()</em>. <strong>Procure executá-lo após a tentativa de upload.</strong> Exemplo:
+			  			</p>
+
+			  			<pre class="brush: php;">
+							$erros = $upload->getDataErrors();
+							var_dump($erros);
+						</pre>
+
+						<h3>
+			  				Exemplo básico completo
+			  			</h3>
+
+			  			<p>
+			  				Veja o script completo:
+			  			</p>
+
+			  			<pre class="brush: php;">
+			  				// inclui a Classe
+							require_once('wm-upload/WMUpload.php');
+
+							// instacia a Classe
+							$upload = new WMUpload();
+
+							// pega os arquivos
+							$file = (isset($_FILES['file'])) ? $_FILES['file'] : null;
+							$file2 = (isset($_FILES['file2'])) ? $_FILES['file2'] : null;
+
+							// adiciona os arquivos para upload
+							$upload->addFile($file);
+							$upload->addFile($file2);
+
+							// pega os dados enviados
+							$infos = $upload->getElementsSended();
+							var_dump($infos);
+
+							// faz o upload
+							if($upload->upload())
+							{
+								echo 'arquivo salvo com sucesso<br>';
+							}
+							else
+							{
+								var_dump($upload->getDataErrors());
+							}
+						</pre>
+
+						<h3>
+							O html
+						</h3>
+
+						<p>
+							O formulário deve poder fazer upload de arquivos. Por isso o <em>enctype</em> deve estar definido como <em>multipart/form-data</em> e o <em>method</em> como <em>post</em>
+						</p>
+						<p>
+							O input do tipo file pode aceitar múltiplos arquivos. Nesse caso adcione colchetes (<em>[]</em>) ao nome do campo.
+						</p>
+
+						<pre class="brush: html;">
+							<form action="#" method="post" enctype="multipart/form-data">
+								<label>file 1</label>
+								<input name="file[]" id="file_1" type="file" class="" multiple>
+								<br>
+								<label>file 2</label>
+								<input name="file2" id="file_2" type="file" class="">
+								<br>
+								<button class="btn big btn-primary">Enviar</button>
+							</form>
+						</pre>
+
+						<br><br>
+
+						<ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="https://github.com/welisonmenezes/wm-upload" target="_blank" class="btn btn-primary btn-large btn-block" title="WM Gridfolio no Github">GITHUB</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://twitter.com/WelisonMenezes" target="_blank" class="btn btn-primary btn-large btn-block" title="Perfil no Twitter">TWITTER</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="http://welisonmenezes.com.br/" target="_blank" class="btn btn-primary btn-large btn-block" title="Portifólio Welison Menezes">WEBSITE</a>
+                            </li>
+                        </ul>
+
+			  		</article>
+			  		
+			  	</div>
+
+			</div>
+
+		</div><!-- /.container --> <br>
+
+		<br><br><br>
+
+		<footer class="footer">
+			<div class="container">
+			<p class="text-muted">&copy; Todos os direitos reservados. 2014 || Welison Menezes</p>
+			</div>
+		</footer>
+
+		<script type="text/javascript" src="assets/js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				SyntaxHighlighter.all();
+			});
+		</script>
+	</body>
+</html>
